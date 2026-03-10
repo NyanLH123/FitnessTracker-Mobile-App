@@ -1,12 +1,18 @@
 package com.example.fitnesstrackingapp
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.fitnesstrackingapp.databinding.FragmentRegisterBinding
+import org.json.JSONObject
 
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
@@ -88,7 +94,31 @@ class RegisterFragment : Fragment() {
     }
 
     private fun registerUser(firstName: String, lastName: String, username: String, email: String, password: String) {
+        val api = "http://10.0.2.2/projects/mobileapi/register.php"
 
+        val request = object : StringRequest(Method.POST, api, { response ->
+            Log.i("Register Listener", "***Register Successful")
+
+            val obj = JSONObject(response)
+            val msg = obj.get("message").toString()
+
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+
+            if (msg == "Login Success") {
+                val userObj = obj.getJSONObject("user")
+                val username = userObj.getString("username")
+
+                Log.i("Login User", "Welcome, $username")
+
+                findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            }
+        }, { error ->
+            Log.i("Register Listener","***Error Message: $error")
+        }) {
+            override fun getParams(): Map<String?, String?>? {
+                return mapOf("firstname" to firstName, "lastname" to lastName, "username" to username, "email" to email, "password" to password)
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
     }
-
 }
