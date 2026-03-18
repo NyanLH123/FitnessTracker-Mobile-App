@@ -2,8 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/welcome"
-        android:title="Welcome"
-        android:icon="@drawable/ic_launcher_background"
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/item_home"
+        app:showAsAction="always"
+        />
+
+    <item
+        android:id="@+id/search"
+        android:title="Search"
+        android:icon="@drawable/item_search"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/add"
+        android:title="Add"
+        android:icon="@drawable/item_add"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/list"
+        android:title="List"
+        android:icon="@drawable/item_list"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/item_profile"
         app:showAsAction="always"/>
 </menu>

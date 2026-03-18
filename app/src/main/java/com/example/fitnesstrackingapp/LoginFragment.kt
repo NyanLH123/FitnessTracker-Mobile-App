@@ -67,7 +67,7 @@ class LoginFragment : Fragment() {
 
 
     private fun loginUser(username: String, password: String) {
-        val api = "http://10.0.2.2/projects/mobileapi/login.php"
+        val api = "http://10.0.2.2/projects/mobileapi/mobile/login.php"
 
         val request = object : StringRequest(
             Request.Method.POST, api,

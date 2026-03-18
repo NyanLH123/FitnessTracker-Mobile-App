@@ -94,7 +94,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun registerUser(firstName: String, lastName: String, username: String, email: String, password: String) {
-        val api = "http://10.0.2.2/projects/mobileapi/register.php"
+        val api = "http://10.0.2.2/projects/mobileapi/mobile/register.php"
 
         val request = object : StringRequest(Method.POST, api, { response ->
             Log.i("Register Listener", "***Register Successful")

@@ -11,4 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
+
+    <TextView
+        android:id="@+id/txtWorkoutDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <TextView
+        android:id="@+id/txtWorkoutDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 </LinearLayout>

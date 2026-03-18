@@ -1,59 +1,112 @@
 package com.example.fitnesstrackingapp
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.example.fitnesstrackingapp.databinding.FragmentListBinding
+import org.json.JSONObject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentListBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+    private lateinit var workoutList: ArrayList<WorkoutModel>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        binding = FragmentListBinding.inflate(layoutInflater, container, false)
+
+        workoutList = ArrayList<WorkoutModel>()
+
+        if (workoutList.size === 0) {
+
+        } else {
+            showRecyclerView(workoutList)
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    @SuppressLint("NotifyDataChanged")
+    private fun showRecyclerView(workoutList: ArrayList<WorkoutModel>) {
+        binding.recyclerViewWorkoutList.layoutManager = LinearLayoutManager(context)
+        binding.recyclerViewWorkoutList.adapter = WorkoutAdapter(workoutList)
+
+        binding.recyclerViewWorkoutList.adapter?.notifyDataSetChanged()
     }
+
+    private fun showWorkoutList(userId: Int) {
+        val api = "http://10.0.2.2/projects/mobileapi/mobile/showWorkoutList.php"
+
+        val request = object : StringRequest(
+            Request.Method.POST, api,
+            { response ->
+                Log.i("Workout List", "***Workout Response: $response")
+
+                try {
+                    val obj = JSONObject(response)
+                    val msg = obj.getString("message")
+                    val workouts = obj.getJSONArray("workouts")
+
+                    if (msg == "not_empty") {
+                        for  (i in 0 until workouts.length()) {
+                            val workoutItem = workouts.getJSONObject(i)
+                            val id = workoutItem.getInt("id")
+                            val type = workoutItem.getString("type")
+                            val logDate = workoutItem.getString("logDate")
+                            val day = workoutItem.getInt("day")
+                            val month = workoutItem.getInt("month")
+                            val year = workoutItem.getInt("year")
+                            val time = workoutItem.getString("time")
+                            val duration = workoutItem.getInt("duration")
+                            val distance = workoutItem.getDouble("distance")
+                            val weight = workoutItem.getDouble("weight")
+                            val place = workoutItem.getString("place")
+                            val remark = workoutItem.getString("remark")
+
+                            val workoutModel = WorkoutModel(id, type, logDate, day, month, year, time, duration, distance, weight, place, remark, userId)
+                        }
+                        Log.i("Workout List", "***Not empty. Size:" + workouts.length())
+                    } else {
+                        val alertDialog = AlertDialog.Builder(requireContext())
+                        alertDialog.setTitle("Empty Workout!")
+                            .setMessage("No record in your workout list")
+                            .setCancelable(false)
+                            .setPositiveButton("Okay"){
+                                dialog, _-> dialog.dismiss()
+                            }
+                        val alert = alertDialog.create()
+                        alert.show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("Workout List", "JSON Parse Error: ${e.message}")
+                    Toast.makeText(context, "Invalid response from server", Toast.LENGTH_LONG).show()
+                }
+            },
+            { error ->
+                Log.e("Workout List", "***Error Message: ${error.message}")
+                Toast.makeText(context, "fetch failed: ${error.message}", Toast.LENGTH_LONG).show()
+            }
+        ) {
+            override fun getParams(): Map<String, String> {
+                return mapOf(
+                    "userId" to userId.toString()
+                )
+            }
+        }
+
+        Volley.newRequestQueue(context).add(request)
+    }
+
 }
