@@ -40,6 +40,11 @@ class LoginFragment : Fragment() {
             }
         }
 
+        binding.btnClear.setOnClickListener {
+            binding.editUsername.text.clear()
+            binding.editPassword.text.clear()
+        }
+
         return binding.root
     }
 
@@ -70,9 +75,9 @@ class LoginFragment : Fragment() {
         val api = "http://10.0.2.2/projects/mobileapi/mobile/login.php"
 
         val request = object : StringRequest(
-            Request.Method.POST, api,
+            Method.POST, api,
             { response ->
-                Log.i("Login Listener", "***Login Response: $response")
+                Log.i("Login Listener", "***Login Successful: $response")
 
                 try {
                     val obj = JSONObject(response)
@@ -80,7 +85,7 @@ class LoginFragment : Fragment() {
 
                     Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
 
-                    if (msg == "Login Success") {
+                    if (msg == "Login Successful") {
                         val userObj = obj.getJSONObject("user")
                         val id = userObj.getString("id")
                         val loggedInUsername = userObj.getString("username")
