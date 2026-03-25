@@ -85,7 +85,7 @@ class LoginFragment : Fragment() {
 
                     Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
 
-                    if (msg == "Login Successful") {
+                    if (msg == "Login Success") {
                         val userObj = obj.getJSONObject("user")
                         val id = userObj.getString("id")
                         val loggedInUsername = userObj.getString("username")
