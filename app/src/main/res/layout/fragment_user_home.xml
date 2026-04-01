@@ -15,12 +15,47 @@
         android:gravity="center"
         android:text="Welcome"
         android:textColor="@color/text_primary_white"
-        android:textSize="16sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.007" />
+
+    <TextView
+        android:layout_width="137dp"
+        android:layout_height="34dp"
+        android:layout_marginHorizontal="24dp"
+        android:gravity="center"
+        android:text="Monthly Report"
+        android:textColor="@color/text_primary_white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/barChartView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <com.db.williamchart.view.BarChartView
+        android:id="@+id/barChartView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="200dp"
+        android:padding="10dp"
+        app:chart_axis="x"
+        app:chart_barsColor="@color/brand_accent"
+        app:chart_barsRadius="1dp"
+        app:chart_labelsColor="#0D47A1"
+        app:chart_labelsSize="10sp"
+        app:chart_spacing="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome"
+        app:layout_constraintVertical_bias="0.078" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"

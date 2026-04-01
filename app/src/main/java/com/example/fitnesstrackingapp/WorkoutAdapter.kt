@@ -27,7 +27,7 @@ class WorkoutAdapter(val workoutList: ArrayList<WorkoutModel>,val showWorkoutDet
         holder.itemBinding.txtWorkoutDate.text = "Date: "+workoutItem.logDate
         holder.itemBinding.txtWorkoutDuration.text = "Duration: "+workoutItem.duration.toString()+" minutes"
 
-        holder.itemBinding.btnShowWorkoutDetails.setOnClickListener {
+        holder.itemBinding.btnShowWorkoutDetail.setOnClickListener {
             showWorkoutDetails(workoutItem)
         }
         holder.itemBinding.btnDeleteWorkout.setOnClickListener {

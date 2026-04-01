@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/user_nav_graphi"
+    android:id="@+id/user_nav_graph"
     app:startDestination="@id/userHomeFragment">
 
     <fragment
         android:id="@+id/userHomeFragment"
         android:name="com.example.fitnesstrackingapp.UserHomeFragment"
         android:label="fragment_user_home"
-        tools:layout="@layout/fragment_user_home" >
+        tools:layout="@layout/fragment_user_home">
         <action
             android:id="@+id/action_userHomeFragment_to_entryFragment"
             app:destination="@id/entryFragment" />
@@ -17,11 +17,15 @@
             android:id="@+id/action_userHomeFragment_to_listFragment"
             app:destination="@id/listFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/entryFragment"
         android:name="com.example.fitnesstrackingapp.EntryFragment"
         android:label="fragment_entry"
-        tools:layout="@layout/fragment_entry" >
+        tools:layout="@layout/fragment_entry">
+        <argument
+            android:name="workout"
+            app:argType="com.example.fitnesstrackingapp.WorkoutModel" />
         <action
             android:id="@+id/action_entryFragment_to_userHomeFragment"
             app:destination="@id/userHomeFragment" />
@@ -29,11 +33,17 @@
             android:id="@+id/action_entryFragment_to_listFragment"
             app:destination="@id/listFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/listFragment"
         android:name="com.example.fitnesstrackingapp.ListFragment"
         android:label="fragment_list"
-        tools:layout="@layout/fragment_list" >
+        tools:layout="@layout/fragment_list">
+
+        <argument
+            android:name="workout"
+            app:argType="com.example.fitnesstrackingapp.WorkoutModel" />
+
         <action
             android:id="@+id/action_listFragment_to_userHomeFragment"
             app:destination="@id/userHomeFragment" />

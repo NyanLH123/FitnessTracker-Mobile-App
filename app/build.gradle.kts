@@ -84,4 +84,6 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-location:21.3.0")
 
+    implementation("com.diogobernardino:williamchart:3.10.1")
+
 }

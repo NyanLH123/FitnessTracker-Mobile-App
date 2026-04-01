@@ -1,7 +1,6 @@
 package com.example.fitnesstrackingapp
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -56,6 +56,11 @@ class ListFragment : Fragment() {
             .setNegativeButton("no"){dialog,_ -> dialog.dismiss()}
         val alert = alertDialog.create()
         alert.show()
+    }
+
+    private fun editWorkoutAction(workout: WorkoutModel) {
+        val action= ListFragmentDirections.actionListFragmentToEntryFragment(workout)
+        findNavController().navigate(action)
     }
 
     private fun deleteWorkoutAction(id: Int) {
@@ -168,7 +173,5 @@ class ListFragment : Fragment() {
         val alert= alertDialog.create()
         alert.show()
     }
-
-
 
 }

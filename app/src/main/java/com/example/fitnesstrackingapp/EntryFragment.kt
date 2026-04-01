@@ -47,14 +47,17 @@ class EntryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentEntryBinding.inflate(inflater, container, false)
-
         val id = arguments?.getInt("id")
-        userId = id!!
+        Log.d("Entry","Entry***$id")
+        if(id!=null)    userId = id
 
-        val workoutModel = arguments?.getSerializable("WorkoutModel", WorkoutModel::class.java)
+        //>33
+        //val workoutModel = arguments?.getSerializable("WorkoutModel", WorkoutModel::class.java)
+
+        //<33
+        val workoutModel = arguments?.getSerializable("WorkoutModel") as WorkoutModel?
 
         if (workoutModel != null) {
-            //edit
             binding.apply {
                 editDate.text = workoutModel.logDate
                 editTime.text = workoutModel.time
@@ -69,20 +72,19 @@ class EntryFragment : Fragment() {
 
                 btnActivityAdd.text = "Edit"
             }
-
-
         }
-        val spinnerAdapter =
-            ArrayAdapter(requireContext(), R.layout.custom_spinner_item_view, activityType)
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerActivityType.adapter = spinnerAdapter
 
+
+        val spinnerAdapter = ArrayAdapter(requireContext(), R.layout.custom_spinner_item_view, activityType)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.spinnerActivityType.adapter = spinnerAdapter
         binding.spinnerActivityType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
-
                 override fun onItemSelected(
                     parent: AdapterView<*>?, view: View?, position: Int, id: Long
-                ) {
+                )
+                {
                     selectedType = activityType[position]
                 }
 
@@ -90,10 +92,11 @@ class EntryFragment : Fragment() {
                     //do nothing
                 }
             }
+
+
         val calendar = Calendar.getInstance()
         binding.editDate.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(
-                requireContext(),
+            val datePickerDialog = DatePickerDialog(requireContext(),
                 { _, y, m, d ->
                     val cal = Calendar.getInstance()
                     cal.set(y, m, d)
@@ -113,9 +116,9 @@ class EntryFragment : Fragment() {
             datePickerDialog.show()
         }
 
+
         binding.editTime.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(
-                requireContext(),
+            val timePickerDialog = TimePickerDialog(requireContext(),
                 { _, hr, min ->
                     val cal = Calendar.getInstance()
                     cal.set(Calendar.HOUR_OF_DAY, hr)
@@ -123,7 +126,7 @@ class EntryFragment : Fragment() {
 
                     val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
                     val selectedTime = timeFormat.format(cal.time)
-                    binding.editDate.text = selectedTime
+                    binding.editTime.text = selectedTime
                 },
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
@@ -131,6 +134,7 @@ class EntryFragment : Fragment() {
             )
             timePickerDialog.show()
         }
+
 
         binding.btnActivityAdd.setOnClickListener {
             val type = selectedType
@@ -186,6 +190,10 @@ class EntryFragment : Fragment() {
 
         binding.btnClear.setOnClickListener {
             binding.editDuration.setText("")
+            binding.editDistance.setText("")
+            binding.editWeight.setText("")
+            binding.editPlace.setText("")
+            binding.editRemark.setText("")
         }
 
         return binding.root
@@ -204,7 +212,6 @@ class EntryFragment : Fragment() {
                 Toast.makeText(context, "Response:$msg", Toast.LENGTH_LONG).show()
                 val action = EntryFragmentDirections.actionEntryFragmentToListFragment(workout)
                 findNavController().navigate(action)
-
 
             }, { error ->
                 Log.d("Edit Workout Listener", "***Error:$error")
@@ -248,7 +255,6 @@ class EntryFragment : Fragment() {
                 val obj = JSONObject(response)
                 val msg = obj.get("message").toString()
                 Toast.makeText(context, "Response:$msg", Toast.LENGTH_LONG).show()
-
                 val action = EntryFragmentDirections.actionEntryFragmentToListFragment(workout)
                 findNavController().navigate(action)
 

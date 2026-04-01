@@ -14,9 +14,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.fitnesstrackingapp.databinding.CustomDialogViewBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import org.json.JSONObject
 import java.io.IOException
 import java.util.Locale
 
@@ -24,26 +28,95 @@ class UserHomeFragment : Fragment() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private val REQUEST_CODE = 100
+    private val monthList = arrayOf(0,0,0,0,0,0,0,0,0,0,0,0)
     private lateinit var binding: FragmentUserHomeBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserHomeBinding.inflate(layoutInflater, container, false)
-        val id = arguments?.getString("id")
+        val id = arguments?.getInt("id")
         val firstName = arguments?.getString("firstname")
-        val lastName = arguments?.getString("lastnname")
 
-        Log.i("Welcome Message","Welcome back!, $firstName $lastName")
-        binding.txtWelcome.text ="Welcome Back!, $firstName $lastName"
-
+        Log.i("Welcome Message","Welcome back!, $firstName")
+        binding.txtWelcome.text ="Welcome Back! $firstName"
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
+        val barSet = listOf(
+            "JAN" to monthList[0].toFloat(),
+            "FEB" to monthList[1].toFloat(),
+            "MAR" to monthList[2].toFloat(),
+            "APR" to monthList[3].toFloat(),
+            "MAY" to monthList[4].toFloat(),
+            "JUNE" to monthList[5].toFloat(),
+            "JUL" to monthList[6].toFloat(),
+            "AUG" to monthList[1].toFloat(),
+            "SEP" to monthList[8].toFloat(),
+            "OCT" to monthList[9].toFloat(),
+            "NOV" to monthList[10].toFloat(),
+            "DEC" to monthList[11].toFloat()
+        )
+
+        binding.barChartView.animate(barSet)
+        binding.barChartView.invalidate()
         binding.floatingActionButton.setOnClickListener {
 
         }
 
         return binding.root
+    }
+
+    private fun showWorkoutList(userId: Int) {
+        val api = "http://10.0.2.2/projects/mobileapi/mobile/showTotalDuration.php"
+
+        val request = object : StringRequest(
+            Request.Method.POST, api,
+            { response ->
+                Log.i("Workout Duration Report", "***Duration Report Response: $response")
+
+                try {
+                    val obj = JSONObject(response)
+                    val msg = obj.getString("message")
+                    val duration = obj.getJSONArray("duration")
+
+                    if (msg == "not_empty") {
+                        for  (i in 0 until duration.length()) {
+                            val durationItem = duration.getJSONObject(i)
+                            val totalDuration = durationItem.getInt("total_duration")
+                            val month = durationItem.getInt("month")
+
+                            monthList[month - 1] = totalDuration
+                        }
+                        Log.i("Duration Report", "***Not empty. Size:" + duration.length())
+                    } else {
+                        val alertDialog = AlertDialog.Builder(requireContext())
+                        alertDialog.setTitle("Empty Workout!")
+                            .setMessage("No record in your workout list")
+                            .setCancelable(false)
+                            .setPositiveButton("Okay"){
+                                    dialog, _-> dialog.dismiss()
+                            }
+                        val alert = alertDialog.create()
+                        alert.show()
+                    }
+                } catch (e: Exception) {
+                    Log.e("Duration Report", "JSON Parse Error: ${e.message}")
+                    Toast.makeText(context, "Invalid response from server", Toast.LENGTH_LONG).show()
+                }
+            },
+            { error ->
+                Log.e("Workout List", "***Error Message: ${error.message}")
+                Toast.makeText(context, "fetch failed: ${error.message}", Toast.LENGTH_LONG).show()
+            }
+        ) {
+            override fun getParams(): Map<String, String> {
+                return mapOf(
+                    "userId" to userId.toString()
+                )
+            }
+        }
+
+        Volley.newRequestQueue(context).add(request)
     }
 
     private fun getLastLocation() {

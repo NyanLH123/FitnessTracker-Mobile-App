@@ -87,13 +87,15 @@ class LoginFragment : Fragment() {
 
                     if (msg == "Login Success") {
                         val userObj = obj.getJSONObject("user")
-                        val id = userObj.getString("id")
+                        val id = userObj.getInt("id")
                         val loggedInUsername = userObj.getString("username")
+                        val firstName = userObj.getString("firstname")
 
-                        Log.i("Login User", "Welcome, $loggedInUsername")
+                        Log.i("Login User", "***Welcome, $loggedInUsername, $firstName")
                         val intent = Intent(context, UserActivity::class.java)
                         intent.putExtra("id", id)
                         intent.putExtra("username", loggedInUsername)
+                        intent.putExtra("firstname", firstName)
                         startActivity(intent)
                         activity?.finish()
                     }
