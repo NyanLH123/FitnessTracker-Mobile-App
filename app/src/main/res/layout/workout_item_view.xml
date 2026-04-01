@@ -1,26 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    >
-    
+    android:orientation="vertical"
+    android:layout_margin="12dp"
+    android:background="@color/surface_card"
+    android:padding="18dp">
+
     <TextView
         android:id="@+id/txtWorkoutType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="Running"
+        android:textColor="@color/text_primary_white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtWorkoutDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginBottom="4dp"
+        android:text="9/3/2026"
+        android:textColor="@color/text_secondary_gray"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txtWorkoutDuration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:layout_marginBottom="14dp"
+        android:text="30 Mins"
+        android:textColor="@color/text_secondary_gray"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnShowWorkoutDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/nav_inactive"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:text="Show Details"
+                android:textAllCaps="true"
+                android:textColor="@color/text_primary_white"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btnEditWorkout"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/text_hint_dark"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:text="Edit"
+                android:textAllCaps="true"
+                android:textColor="@color/text_primary_white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDeleteWorkout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/card_cardio_red"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:text="Delete"
+            android:textAllCaps="true"
+            android:textColor="@color/text_primary_white"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+
 </LinearLayout>

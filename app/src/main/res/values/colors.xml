@@ -8,7 +8,7 @@
     <!-- Backgrounds -->
     <color name="bg_app_main">#0F172A</color>
     <color name="bg_app_secondary">#1E293B</color>
-    <color name="surface_card">#334155</color>
+    <color name="surface_card">#1E293B</color>
 
     <!-- Text Colors -->
     <color name="text_primary_white">#F8FAFC</color>

@@ -19,31 +19,70 @@ import org.json.JSONObject
 
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
-
     private lateinit var workoutList: ArrayList<WorkoutModel>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(layoutInflater, container, false)
-
-        workoutList = ArrayList<WorkoutModel>()
-
-        if (workoutList.size === 0) {
-
-        } else {
-            showRecyclerView(workoutList)
-        }
-
+        val userId=arguments?.getInt("id")
+        showWorkoutList(userId!!)
         return binding.root
     }
 
     @SuppressLint("NotifyDataChanged")
     private fun showRecyclerView(workoutList: ArrayList<WorkoutModel>) {
-        binding.recyclerViewWorkoutList.layoutManager = LinearLayoutManager(context)
-        binding.recyclerViewWorkoutList.adapter = WorkoutAdapter(workoutList)
-
+        binding.recyclerViewWorkoutList.layoutManager= LinearLayoutManager(context)
+        binding.recyclerViewWorkoutList.adapter= WorkoutAdapter(workoutList,
+            showWorkoutDetails = {workoutModel -> showAlertDetails(workoutModel)},
+            deleteWorkout = {id->
+                deleteWorkoutConfirmation(id)
+            },
+            editWorkout = {workoutModel ->
+                editWorkoutAction(workoutModel)}
+        )
         binding.recyclerViewWorkoutList.adapter?.notifyDataSetChanged()
+    }
+
+    private fun deleteWorkoutConfirmation (id:Int){
+        val alertDialog= AlertDialog.Builder(requireContext())
+        alertDialog.setTitle("Warning")
+            .setMessage("are you sure you want to delete it?")
+            .setCancelable(false)
+            .setPositiveButton("yes"){dialog,_ ->
+                deleteWorkoutAction(id)
+                dialog.dismiss()
+            }
+            .setNegativeButton("no"){dialog,_ -> dialog.dismiss()}
+        val alert = alertDialog.create()
+        alert.show()
+    }
+
+    private fun deleteWorkoutAction(id: Int) {
+        val url="http://10.0.2.2/projects/mobileapi/mobile/deleteWorkOut.php"
+
+        val request=object: StringRequest(Method.POST,url,
+            { response->
+
+                Log.d("Delete Workout Listener", "Successfully Deleted!")
+                val obj = JSONObject(response)
+                val msg= obj.get("message").toString()
+                Toast.makeText(context,"Response:$msg", Toast.LENGTH_LONG).show()
+
+            }, { error->
+                Log.d("Delete Workout Listener", "***Error:$error")
+
+            }
+
+        ){
+            override fun getParams(): Map<String?, String?>? {
+                return mapOf(
+                    "id" to id.toString()
+                )
+            }
+        }
+        Volley.newRequestQueue(context).add(request)
+
     }
 
     private fun showWorkoutList(userId: Int) {
@@ -108,5 +147,28 @@ class ListFragment : Fragment() {
 
         Volley.newRequestQueue(context).add(request)
     }
+
+    private fun showAlertDetails(workoutModel: WorkoutModel){
+        val stringBuilder= StringBuilder()
+        stringBuilder.append("Type: "+workoutModel.type+"\n\n")
+            .append("Date: "+workoutModel.logDate+"\n")
+            .append("Time: "+workoutModel.time+"\n")
+            .append("Duration: "+workoutModel.duration+" minutes\n")
+            .append("Distance: "+workoutModel.distance+" km\n")
+            .append("Weight: "+workoutModel.weight+" kg\n")
+            .append("Place: "+workoutModel.place+"\n")
+            .append("Remark: "+workoutModel.remark+"\n")
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog.setTitle("Workout Information")
+            .setMessage(stringBuilder.toString())
+            .setCancelable(false)
+            .setPositiveButton("Ok"){
+                    dialog,_ -> dialog.dismiss()
+            }
+        val alert= alertDialog.create()
+        alert.show()
+    }
+
+
 
 }

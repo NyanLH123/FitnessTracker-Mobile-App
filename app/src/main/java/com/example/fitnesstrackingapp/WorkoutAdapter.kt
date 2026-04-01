@@ -5,14 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fitnesstrackingapp.databinding.WorkoutItemViewBinding
 
-class WorkoutAdapter(val workoutList: ArrayList<WorkoutModel>):
+class WorkoutAdapter(val workoutList: ArrayList<WorkoutModel>,val showWorkoutDetails:(WorkoutModel)->Unit,
+                     val deleteWorkout:(id:Int)->Unit,
+                     val editWorkout:(WorkoutModel)->Unit):
     RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder>()
 {
     override fun onCreateViewHolder(
-        p0: ViewGroup,
-        p1: Int
+        parent: ViewGroup,
+        viewType: Int
     ): WorkoutViewHolder {
-        val itemBinding = WorkoutItemViewBinding.inflate(LayoutInflater.from(p0.context), p0, false)
+        val itemBinding= WorkoutItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return WorkoutViewHolder(itemBinding)
     }
 
@@ -20,15 +22,28 @@ class WorkoutAdapter(val workoutList: ArrayList<WorkoutModel>):
         holder: WorkoutViewHolder,
         position: Int
     ) {
-        val workoutItem = workoutList[position];
+        val workoutItem = workoutList[position]
         holder.itemBinding.txtWorkoutType.text = workoutItem.type
-        holder.itemBinding.txtWorkoutDate.text = workoutItem.logDate
-        holder.itemBinding.txtWorkoutDuration.text = workoutItem.duration.toString() + " minutes"
+        holder.itemBinding.txtWorkoutDate.text = "Date: "+workoutItem.logDate
+        holder.itemBinding.txtWorkoutDuration.text = "Duration: "+workoutItem.duration.toString()+" minutes"
+
+        holder.itemBinding.btnShowWorkoutDetails.setOnClickListener {
+            showWorkoutDetails(workoutItem)
+        }
+        holder.itemBinding.btnDeleteWorkout.setOnClickListener {
+            deleteWorkout(workoutItem.id)
+        }
+        holder.itemBinding.btnEditWorkout.setOnClickListener {
+            editWorkout(workoutItem)
+        }
+
     }
 
     override fun getItemCount(): Int {
         return workoutList.size
     }
 
-    class WorkoutViewHolder(val itemBinding: WorkoutItemViewBinding) : RecyclerView.ViewHolder(itemBinding.root)
+    class WorkoutViewHolder(val itemBinding: WorkoutItemViewBinding):
+        RecyclerView.ViewHolder(itemBinding.root){}
+
 }

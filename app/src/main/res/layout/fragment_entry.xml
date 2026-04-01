@@ -1,19 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_app_main"
+    android:orientation="vertical"
     tools:context=".EntryFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/text_primary_white"
-        android:text="New Activity"
-        android:textSize="20sp"
-        android:layout_margin="10dp"
-        />
+        android:layout_margin="30dp"
+        android:orientation="vertical"
+        >
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/text_primary_white"
+            android:text="New Activity"
+            android:textSize="20sp"
+            />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinnerActivityType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/editDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select date"
+                        android:textColor="@color/text_secondary_gray"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:padding="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/editTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Select time"
+                        android:textColor="@color/text_secondary_gray"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:padding="10dp" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/editDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:hint="Enter Duration"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_hint_dark" />
+
+                <EditText
+                    android:id="@+id/editDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:hint="Enter Distance"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_hint_dark" />
+
+                <EditText
+                    android:id="@+id/editWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:hint="Enter Weight"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_hint_dark" />
+
+                <EditText
+                    android:id="@+id/editPlace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:hint="Enter Place"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_hint_dark" />
+
+                <EditText
+                    android:id="@+id/editRemark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/text_primary_white"
+                    android:hint="Enter your remark"
+                    android:inputType="text"
+                    android:padding="15dp"
+                    android:textColor="@color/text_primary_white"
+                    android:textColorHint="@color/text_hint_dark" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <Button
+                        android:id="@+id/btnActivityAdd"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add New Activity"
+                        android:padding="10dp"
+                        android:backgroundTint="@color/brand_accent"
+                        />
+
+                    <Button
+                        android:id="@+id/btnClear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Clear"
+                        android:padding="10dp"
+                        android:backgroundTint="@color/text_secondary_gray"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
